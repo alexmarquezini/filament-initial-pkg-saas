@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
 use App\Actions\FilamentCompanies\AddCompanyEmployee;
 use App\Actions\FilamentCompanies\CreateConnectedAccount;
 use App\Actions\FilamentCompanies\CreateNewUser;
@@ -56,7 +57,7 @@ class FilamentCompaniesServiceProvider extends PanelProvider
             ->login(Login::class)
             ->passwordReset()
             ->homeUrl(static fn (): string => url(Pages\Dashboard::getUrl(panel: 'company', tenant: Auth::user()?->personalCompany())))
-            ->plugin(
+            ->plugins([
                 FilamentCompanies::make()
                     ->userPanel('user')
                     ->switchCurrentCompany()
@@ -84,7 +85,8 @@ class FilamentCompaniesServiceProvider extends PanelProvider
                     // ->addProfileComponents([
                     //     7 => CustomComponent::class,
                     // ]),
-            )
+                    FilamentSpatieRolesPermissionsPlugin::make()
+            ])
             ->registration(Register::class)
             ->colors([
                 'primary' => Color::Amber,
